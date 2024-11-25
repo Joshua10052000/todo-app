@@ -1,0 +1,425 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="./src/styles/output.css" />
+    <title>Tasks Manager</title>
+  </head>
+  <body class="font-sans antialiased bg-background min-h-screen">
+    <header
+      class="bg-background fixed top-0 inset-x-0 h-16 border-b shadow-md"
+    ></header>
+    <main class="min-h-screen pt-20 container mx-auto space-y-6">
+      <article class="flex justify-between items-center">
+        <section></section>
+        <section class="flex justify-center items-center gap-2">
+          <div
+            role="dialog"
+            data-dialog-provider="task-dialog"
+            data-state="closed"
+            class="group/dialog"
+          >
+            <button
+              data-dialog-trigger="task-dialog"
+              class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-primary/90 h-10 w-10"
+            >
+              <svg
+                class="size-4"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M5 12h14"></path>
+                <path d="M12 5v14"></path>
+              </svg>
+            </button>
+            <div
+              data-dialog-overlay="task-dialog"
+              role="presentation"
+              class="fixed inset-0 z-50 bg-black/80 group-data-[state=closed]/dialog:opacity-0 group-data-[state=closed]/dialog:invisible"
+            ></div>
+            <div
+              role="document"
+              class="fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg sm:rounded-lg group-data-[state=closed]/dialog:opacity-0 group-data-[state=closed]/dialog:invisible"
+            >
+              <button
+                data-dialog-close="task-dialog"
+                class="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground"
+              >
+                <svg
+                  class="size-4"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M18 6 6 18" />
+                  <path d="m6 6 12 12" />
+                </svg>
+              </button>
+              <div class="flex flex-col space-y-1.5 text-center sm:text-left">
+                <h3 class="text-lg font-semibold leading-none tracking-tight">
+                  Create a task
+                </h3>
+                <p class="text-sm text-muted-foreground">
+                  Create a task here, click continue when you are done.
+                </p>
+              </div>
+              <form data-form-provider="task-form" class="grid gap-2">
+                <div class="grid gap-2">
+                  <label
+                    for="name"
+                    class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                    >Name</label
+                  >
+                  <input
+                    id="name"
+                    name="name"
+                    type="text"
+                    class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+                  />
+                </div>
+                <div class="grid gap-2">
+                  <label
+                    for="description"
+                    class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                    >Description</label
+                  >
+                  <textarea
+                    name="description"
+                    id="description"
+                    class="flex min-h-[80px] w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+                  ></textarea>
+                </div>
+                <div class="grid gap-2">
+                  <label
+                    for="priority"
+                    class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                    >Priority</label
+                  >
+                  <select
+                    name="priority"
+                    id="priority"
+                    class="rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+                  >
+                    <optgroup label="Select a priority level">
+                      <option value="high">High</option>
+                      <option value="medium">Medium</option>
+                      <option value="low">Low</option>
+                    </optgroup>
+                  </select>
+                </div>
+                <button
+                  type="submit"
+                  class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
+                >
+                  Continue
+                </button>
+              </form>
+            </div>
+          </div>
+          <div
+            role="dialog"
+            data-dialog-provider="search-dialog"
+            data-state="closed"
+            class="group/dialog"
+          >
+            <button
+              data-dialog-trigger="search-dialog"
+              class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-primary/90 h-10 w-10"
+            >
+              <svg
+                class="size-4"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <circle cx="11" cy="11" r="8" />
+                <path d="m21 21-4.3-4.3" />
+              </svg>
+            </button>
+            <div
+              data-dialog-overlay="search-dialog"
+              role="presentation"
+              class="fixed inset-0 z-50 bg-black/80 group-data-[state=closed]/dialog:opacity-0 group-data-[state=closed]/dialog:invisible"
+            ></div>
+            <div
+              role="document"
+              class="fixed left-[50%] top-[50%] z-50 grid w-full max-w-lg translate-x-[-50%] translate-y-[-50%] gap-4 border bg-background p-6 shadow-lg sm:rounded-lg group-data-[state=closed]/dialog:opacity-0 group-data-[state=closed]/dialog:invisible"
+            >
+              <button
+                data-dialog-close="search-dialog"
+                class="absolute right-4 top-4 rounded-sm opacity-70 ring-offset-background transition-opacity hover:opacity-100 focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2 disabled:pointer-events-none data-[state=open]:bg-accent data-[state=open]:text-muted-foreground"
+              >
+                <svg
+                  class="size-4"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M18 6 6 18" />
+                  <path d="m6 6 12 12" />
+                </svg>
+              </button>
+              <div class="flex flex-col space-y-1.5 text-center sm:text-left">
+                <h3 class="text-lg font-semibold leading-none tracking-tight">
+                  Search a task
+                </h3>
+                <p class="text-sm text-muted-foreground">
+                  Search a task here, click continue when you are done.
+                </p>
+              </div>
+              <form data-form-provider="search-form" class="grid gap-2">
+                <div class="grid gap-2">
+                  <label
+                    for="name"
+                    class="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                    >Name</label
+                  >
+                  <input
+                    id="name"
+                    name="name"
+                    type="text"
+                    class="flex h-10 w-full rounded-md border border-input bg-background px-3 py-2 text-base ring-offset-background file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:cursor-not-allowed disabled:opacity-50 md:text-sm"
+                  />
+                </div>
+                <button
+                  type="submit"
+                  class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 bg-primary text-primary-foreground hover:bg-primary/90 h-10 px-4 py-2"
+                >
+                  Continue
+                </button>
+              </form>
+            </div>
+          </div>
+        </section>
+      </article>
+      <article>
+        <section
+          class="rounded-lg border bg-card text-card-foreground shadow-sm"
+        >
+          <div class="flex flex-col space-y-1.5 p-6">
+            <h3 class="text-2xl font-semibold leading-none tracking-tight">
+              Tasks Manager
+            </h3>
+            <p class="text-sm text-muted-foreground">Manage your tasks here!</p>
+          </div>
+          <div class="p-6 pt-0">
+            <table class="w-full caption-bottom text-sm">
+              <thead class="[&_tr]:border-b">
+                <tr class="border-b transition-colors hover:bg-muted/50">
+                  <th
+                    class="h-12 pl-4 text-left align-middle font-medium text-muted-foreground"
+                  >
+                    <input type="checkbox" role="checkbox" />
+                  </th>
+                  <th
+                    class="h-12 px-4 text-left align-middle font-medium text-muted-foreground"
+                  >
+                    ID
+                  </th>
+                  <th
+                    class="h-12 px-4 text-left align-middle font-medium text-muted-foreground"
+                  >
+                    Name
+                  </th>
+                  <th
+                    class="h-12 px-4 text-left align-middle font-medium text-muted-foreground"
+                  >
+                    Description
+                  </th>
+                  <th
+                    class="h-12 px-4 text-left align-middle font-medium text-muted-foreground"
+                  >
+                    Priority
+                  </th>
+                  <th
+                    class="h-12 px-4 text-left align-middle font-medium text-muted-foreground"
+                  >
+                    Created At
+                  </th>
+                  <th
+                    class="h-12 px-4 text-left align-middle font-medium text-muted-foreground"
+                  >
+                    Updated At
+                  </th>
+                  <th
+                    class="h-12 px-4 text-left align-middle font-medium text-muted-foreground"
+                  >
+                    Actions
+                  </th>
+                </tr>
+              </thead>
+              <tbody class="[&_tr:last-child]:border-0">
+                <!-- <tr class="border-b transition-colors hover:bg-muted/50">
+                  <td class="p-4 pr-0 align-middle">
+                    <input type="checkbox" role="checkbox" />
+                  </td>
+                  <td class="p-4 align-middle">${task.id}</td>
+                  <td class="p-4 align-middle">${task.name}</td>
+                  <td class="p-4 align-middle">${task.description}</td>
+                  <td class="p-4 align-middle font-semibold capitalize">
+                    ${task.priority}
+                  </td>
+                  <td class="p-4 align-middle">
+                    ${dateFormatter.format(task.createdAt)}
+                  </td>
+                  <td class="p-4 align-middle">
+                    ${dateFormatter.format(task.updatedAt)}
+                  </td>
+                  <td class="p-4 align-middle">
+                    <div
+                      id="${task.id}"
+                      data-dropdown-menu-provider="${task.id}"
+                      data-state="closed"
+                      class="group/dropdown relative"
+                    >
+                      <button
+                        data-dropdown-menu-trigger="${task.id}"
+                        class="inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0 hover:bg-accent hover:text-accent-foreground h-10 w-10"
+                      >
+                        <svg
+                          class="size-4"
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                        >
+                          <circle cx="12" cy="12" r="1" />
+                          <circle cx="19" cy="12" r="1" />
+                          <circle cx="5" cy="12" r="1" />
+                        </svg>
+                      </button>
+                      <div
+                        class="z-50 min-w-[8rem] overflow-hidden rounded-md border bg-popover p-1 text-popover-foreground shadow-md group-data-[state=closed]/dropdown:hidden w-52 absolute bg-background top-10 right-1/2 translate-x-1/2"
+                      >
+                        <div class="px-2 py-1.5 text-sm font-semibold">
+                          Actions
+                        </div>
+                        <div
+                          role="separator"
+                          class="-mx-1 my-1 h-px bg-muted"
+                        ></div>
+                        <ul
+                          data-dropdown-menu-group="${task.id}"
+                          data-value=""
+                          class="grid"
+                        >
+                          <li
+                            data-value="delete"
+                            class="relative flex select-none items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground cursor-default hover:bg-accent"
+                          >
+                            <svg
+                              class="size-4"
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="24"
+                              height="24"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              stroke-width="2"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            >
+                              <path d="M3 6h18" />
+                              <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6" />
+                              <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2" />
+                            </svg>
+                            <span>Delete</span>
+                          </li>
+                          <li
+                            data-value="edit"
+                            class="relative flex select-none items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground cursor-default hover:bg-accent"
+                          >
+                            <svg
+                              class="size-4"
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="24"
+                              height="24"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              stroke-width="2"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            >
+                              <path
+                                d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"
+                              />
+                              <path d="m15 5 4 4" />
+                            </svg>
+                            <span>Edit</span>
+                          </li>
+                          <li
+                            data-value="copy"
+                            class="relative flex select-none items-center gap-2 rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground cursor-default hover:bg-accent"
+                          >
+                            <svg
+                              class="size-4"
+                              xmlns="http://www.w3.org/2000/svg"
+                              width="24"
+                              height="24"
+                              viewBox="0 0 24 24"
+                              fill="none"
+                              stroke="currentColor"
+                              stroke-width="2"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                            >
+                              <rect
+                                width="8"
+                                height="4"
+                                x="8"
+                                y="2"
+                                rx="1"
+                                ry="1"
+                              />
+                              <path
+                                d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"
+                              />
+                            </svg>
+                            <span>Copy ID to clipboard</span>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </td>
+                </tr> -->
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </article>
+    </main>
+    <script type="module" src="./src/index.js"></script>
+  </body>
+</html>
